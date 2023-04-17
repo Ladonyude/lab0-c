@@ -55,6 +55,15 @@ qtest: $(OBJS)
 
 check: qtest
 	./$< -v 3 -f traces/trace-eg.cmd
+	./$< -v 3 -f traces/trace-01-ops.cmd
+	./$< -v 3 -f traces/trace-02-ops.cmd
+	./$< -v 3 -f traces/trace-03-ops.cmd
+	./$< -v 3 -f traces/trace-04-ops.cmd
+	./$< -v 3 -f traces/trace-05-ops.cmd
+	./$< -v 3 -f traces/trace-06-ops.cmd
+	./$< -v 3 -f traces/trace-07-string.cmd
+	./$< -v 3 -f traces/trace-08-robust.cmd
+	./$< -v 3 -f traces/trace-09-robust.cmd
 
 test: qtest scripts/driver.py
 	scripts/driver.py -c
