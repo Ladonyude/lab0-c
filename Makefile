@@ -64,6 +64,14 @@ check: qtest
 	./$< -v 3 -f traces/trace-07-string.cmd
 	./$< -v 3 -f traces/trace-08-robust.cmd
 	./$< -v 3 -f traces/trace-09-robust.cmd
+	./$< -v 3 -f traces/trace-10-robust.cmd
+	./$< -v 3 -f traces/trace-11-malloc.cmd
+	./$< -v 3 -f traces/trace-12-malloc.cmd
+	./$< -v 3 -f traces/trace-13-malloc.cmd
+	./$< -v 3 -f traces/trace-14-perf.cmd
+	./$< -v 3 -f traces/trace-15-perf.cmd
+	./$< -v 3 -f traces/trace-16-perf.cmd
+	./$< -v 3 -f traces/trace-17-complexity.cmd
 
 test: qtest scripts/driver.py
 	scripts/driver.py -c

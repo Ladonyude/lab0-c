@@ -24,6 +24,9 @@ struct list_head *q_new()
 /* Free all storage used by queue */
 void q_free(struct list_head *l)
 {
+    if (!l)
+        return;
+
     element_t *elt, *safe;
     list_for_each_entry_safe (elt, safe, l, list)
         q_release_element(elt);
@@ -36,6 +39,11 @@ bool q_insert_head(struct list_head *head, char *s)
     element_t *elt = malloc(sizeof(element_t));
     int len = strlen(s);
     char *st = malloc(sizeof(char) * (len + 1));
+    if (!st || !elt) {
+        free(elt);
+        free(st);
+        return false;
+    }
     strncpy(st, s, len);
     st[len] = '\0';
     elt->value = st;
@@ -49,6 +57,11 @@ bool q_insert_tail(struct list_head *head, char *s)
     element_t *elt = malloc(sizeof(element_t));
     int len = strlen(s);
     char *st = malloc(sizeof(char) * (len + 1));
+    if (!st || !elt) {
+        free(elt);
+        free(st);
+        return false;
+    }
     strncpy(st, s, len);
     st[len] = '\0';
     elt->value = st;
@@ -61,11 +74,11 @@ element_t *q_remove_head(struct list_head *head, char *sp, size_t bufsize)
 {
     if (!head || list_empty(head))
         return NULL;
+
     element_t *node = container_of(head->next, element_t, list);
-    bufsize = strlen(node->value) + 1;
     strncpy(sp, node->value, bufsize - 1);
     sp[bufsize - 1] = '\0';
-    list_del(&node->list);
+    list_del_init(&node->list);
     return node;
 }
 
@@ -74,11 +87,11 @@ element_t *q_remove_tail(struct list_head *head, char *sp, size_t bufsize)
 {
     if (!head || list_empty(head))
         return NULL;
+
     element_t *node = container_of(head->prev, element_t, list);
-    bufsize = strlen(node->value) + 1;
     strncpy(sp, node->value, bufsize - 1);
     sp[bufsize - 1] = '\0';
-    list_del(&node->list);
+    list_del_init(&node->list);
     return node;
 }
 
