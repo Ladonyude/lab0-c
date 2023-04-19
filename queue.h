@@ -250,4 +250,16 @@ int q_descend(struct list_head *head);
  */
 int q_merge(struct list_head *head, bool descend);
 
+/**
+ * q_shuffle() - Shuffle nodes using Fisher–Yates shuffle.
+ * @head: header of queue
+ *
+ * No effect if queue is NULL or empty. If there has only one element, do
+ * nothing.
+ *
+ * Reference:
+ * https://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+ */
+void q_shuffle(struct list_head *head);
+
 #endif /* LAB0_QUEUE_H */

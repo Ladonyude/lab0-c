@@ -293,3 +293,24 @@ int q_merge(struct list_head *head, bool descend)
     }
     return size;
 }
+
+/* Shuffle nodes using Fisher–Yates shuffle */
+void q_shuffle(struct list_head *head)
+{
+    // https://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+    if (!head || list_empty(head))
+        return;
+
+    int unshuffle = q_size(head);
+    struct list_head *node = head->prev;
+    for (; node != head; node = node->prev, --unshuffle) {
+        struct list_head *target, *prev_target;
+        target = head->next;
+        for (int i = rand() % unshuffle; i > 0; --i)
+            target = target->next;
+        prev_target = target->prev;
+        list_move(target, node);
+        list_move(node, prev_target);
+        node = target;
+    }
+}
