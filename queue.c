@@ -202,8 +202,9 @@ void q_sorted_merge_two(struct list_head *l1,
     while (!list_empty(l1) && !list_empty(l2)) {
         element_t *n1 = list_first_entry(l1, element_t, list);
         element_t *n2 = list_first_entry(l2, element_t, list);
-        bool select =
-            strcmp(n1->value, n2->value) * (1 - 2 * descend) < 0 ? true : false;
+        bool select = strcmp(n1->value, n2->value) * (1 - 2 * descend) <= 0
+                          ? true
+                          : false;
         element_t *nt = select ? n1 : n2;
         list_move_tail(&nt->list, &tmp_head);
     }
