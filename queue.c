@@ -36,17 +36,18 @@ void q_free(struct list_head *l)
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
+    if (!head)
+        return false;
+
     element_t *elt = malloc(sizeof(element_t));
-    int len = strlen(s);
-    char *st = malloc(sizeof(char) * (len + 1));
-    if (!st || !elt) {
+    if (!elt)
+        return false;
+
+    elt->value = strdup(s);
+    if (!elt->value) {
         free(elt);
-        free(st);
         return false;
     }
-    strncpy(st, s, len);
-    st[len] = '\0';
-    elt->value = st;
     list_add(&elt->list, head);
     return true;
 }
@@ -54,17 +55,18 @@ bool q_insert_head(struct list_head *head, char *s)
 /* Insert an element at tail of queue */
 bool q_insert_tail(struct list_head *head, char *s)
 {
+    if (!head)
+        return false;
+
     element_t *elt = malloc(sizeof(element_t));
-    int len = strlen(s);
-    char *st = malloc(sizeof(char) * (len + 1));
-    if (!st || !elt) {
+    if (!elt)
+        return false;
+
+    elt->value = strdup(s);
+    if (!elt->value) {
         free(elt);
-        free(st);
         return false;
     }
-    strncpy(st, s, len);
-    st[len] = '\0';
-    elt->value = st;
     list_add_tail(&elt->list, head);
     return true;
 }
@@ -208,11 +210,8 @@ void q_sorted_merge_two(struct list_head *l1,
         element_t *nt = select ? n1 : n2;
         list_move_tail(&nt->list, &tmp_head);
     }
-    if (!list_empty(l1))
-        list_splice_tail(l1, &tmp_head);
-    else
-        list_splice_tail_init(l2, &tmp_head);
-    INIT_LIST_HEAD(l1);
+    list_splice_tail_init(l1, &tmp_head);
+    list_splice_tail_init(l2, &tmp_head);
     list_splice(&tmp_head, l1);
 }
 
